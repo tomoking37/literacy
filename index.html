@@ -49,7 +49,6 @@
 
     .container{max-width:var(--max); margin:0 auto; padding:0 18px}
 
-    /* Header */
     .header{
       position:sticky; top:0; z-index:50;
       background: rgba(7,7,11,.62);
@@ -107,7 +106,6 @@
       .hamburger{display:inline-flex; width:42px; height:42px; justify-content:center}
     }
 
-    /* Drawer */
     .backdrop{
       position:fixed; inset:0;
       background:rgba(0,0,0,.62);
@@ -136,7 +134,6 @@
       background: rgba(255,255,255,.04);
     }
 
-    /* Hero: split + poster feel */
     .hero{padding: 22px 0 10px}
     .poster{
       border-radius: var(--r2);
@@ -212,59 +209,27 @@
 
     .ctas{display:flex; gap:10px; flex-wrap:wrap; margin-top: 6px}
 
-    /* Right: “mix rack” */
-    .rack{
+    .profile-image-container{
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.18);
       overflow:hidden;
       display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      min-height:300px;
     }
-    .rackHead{
-      padding: 14px;
-      display:flex; justify-content:space-between; align-items:flex-start; gap: 12px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .rackHead b{font-size:13px}
-    .rackHead span{display:block; margin-top:6px; color:var(--muted); font-size:12.5px}
-    .knobs{
-      padding: 14px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-    .knob{
-      padding: 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-    }
-    .knob b{display:block; font-size:12.5px}
-    .knob small{display:block; margin-top:6px; color:var(--muted); font-size:12px}
-    .meter{
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.10);
-      overflow:hidden;
-      margin-top: 10px;
-    }
-    .meter > i{
-      display:block; height:100%;
-      width: 60%;
-      background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
-      border-radius: 999px;
-      box-shadow: 0 0 18px rgba(0,245,212,.18);
+    #displayProfileImage{
+      width:100%; height:100%; object-fit:cover;
+      min-height:300px;
     }
 
-    /* Sections: not card-grid heavy */
     .section{padding: 16px 0 0}
     .secHead{
       display:flex; align-items:flex-end; justify-content:space-between; gap: 12px;
       margin: 18px 0 10px;
     }
     .h2{margin:0; font-size:16px; letter-spacing:.4px}
-    .sub{margin:0; color:var(--muted2); font-size:12.5px}
+    .sub{margin:0; color:var(--muted); font-size:12.5px}
 
     .split{
       display:grid;
@@ -313,18 +278,81 @@
     }
     small{color:rgba(255,255,255,.45)}
     html{scroll-behavior:smooth}
+
+    .edit-btn{position:fixed; bottom:20px; right:20px; z-index:100;}
+    .modal{display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); z-index:200; align-items:center; justify-content:center}
+    .modal.show{display:flex}
+    .modal-content{background:var(--bg); border:1px solid rgba(255,255,255,.10); border-radius:var(--r2); padding:28px; max-width:600px; max-height:80vh; overflow-y:auto; width:90%}
+    .modal-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
+    .modal-header h2{margin:0; font-size:18px}
+    .close-modal{background:none; border:none; color:var(--text); cursor:pointer; font-size:28px; padding:0; width:30px; height:30px}
+    .form-group{margin-bottom:16px}
+    .form-group label{display:block; margin-bottom:8px; font-size:13px; color:var(--muted)}
+    .form-group input, .form-group textarea{width:100%; padding:10px 12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); border-radius:12px; color:var(--text); font-family:inherit; font-size:13px}
+    .form-group textarea{resize:vertical; min-height:60px}
+    .profile-img-preview{width:100px; height:100px; border-radius:12px; border:1px solid rgba(255,255,255,.10); object-fit:cover; margin-top:8px}
+    .form-actions{display:flex; gap:10px; margin-top:20px}
+    .save-btn, .cancel-btn{flex:1; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:var(--text); cursor:pointer; font-size:13px; font-weight:600; transition:.15s}
+    .save-btn{background:linear-gradient(135deg, rgba(124,92,255,.35), rgba(0,245,212,.16)); border-color:rgba(124,92,255,.35)}
+    .cancel-btn:hover{background:rgba(255,255,255,.085)}
   </style>
 </head>
 
 <body>
   <div class="noise" aria-hidden="true"></div>
 
+  <button class="btn primary edit-btn" id="editBtn">編集</button>
+
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>プロフィール編集</h2>
+        <button class="close-modal" id="closeModal">&times;</button>
+      </div>
+      <form id="editForm">
+        <div class="form-group">
+          <label>プロフィール画像</label>
+          <input type="file" id="profileImage" accept="image/*">
+          <img id="profileImagePreview" class="profile-img-preview" style="display:none;">
+        </div>
+        <div class="form-group">
+          <label>名前</label>
+          <input type="text" id="nameInput" placeholder="YOUR NAME">
+        </div>
+        <div class="form-group">
+          <label>タイトル</label>
+          <input type="text" id="titleInput" placeholder="音楽の"熱"を、伝わる形に変える。">
+        </div>
+        <div class="form-group">
+          <label>自己紹介</label>
+          <textarea id="leadInput" placeholder="仕事では、感情を「構造」に落とす。"></textarea>
+        </div>
+        <div class="form-group">
+          <label>メール</label>
+          <input type="email" id="emailInput" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Twitter/X</label>
+          <input type="text" id="twitterInput" placeholder="@your_account">
+        </div>
+        <div class="form-group">
+          <label>Instagram</label>
+          <input type="text" id="instagramInput" placeholder="@your_account">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">保存</button>
+          <button type="button" class="cancel-btn" id="cancelBtn">キャンセル</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <header class="header">
     <div class="container">
       <div class="headbar">
         <a class="brand" href="#top">
           <span class="mark" aria-hidden="true"></span>
-          <span>YOUR NAME</span>
+          <span id="navName">YOUR NAME</span>
         </a>
 
         <nav class="nav">
@@ -346,7 +374,7 @@
   <div class="backdrop" id="backdrop"></div>
   <aside class="drawer" id="drawer">
     <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-      <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span>YOUR NAME</span></div>
+      <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span id="drawerName">YOUR NAME</span></div>
       <button class="btn" id="closeMenu">Close</button>
     </div>
     <a class="drawerLink" href="#about">About</a>
@@ -371,10 +399,10 @@
                 <span class="tape">Storytelling</span>
               </div>
 
-              <h1 class="title">音楽の“熱”を、<br>伝わる形に変える。</h1>
-              <p class="lead">
+              <h1 class="title" id="titleDisplay">音楽の"熱"を、<br>伝わる形に変える。</h1>
+              <p class="lead" id="leadDisplay">
                 仕事では、感情を「構造」に落とす。ファンの熱量を「導線」に落とす。
-                音楽業界で使える個性を、ちゃんと“仕事の言葉”で見せるプロフィール。
+                音楽業界で使える個性を、ちゃんと"仕事の言葉"で見せるプロフィール。
               </p>
 
               <div class="ctas">
@@ -391,38 +419,9 @@
               </div>
             </div>
 
-            <div class="rack" aria-label="mix rack">
-              <div class="rackHead">
-                <div>
-                  <b>Mix Rack (UI)</b>
-                  <span>“音”の記号で、らしさを出す</span>
-                </div>
-                <span style="color:rgba(255,255,255,.7); font-size:12px;">2026</span>
-              </div>
-
-              <div class="knobs">
-                <div class="knob">
-                  <b>Idea</b>
-                  <small>企画の強さ</small>
-                  <div class="meter"><i style="width:72%"></i></div>
-                </div>
-                <div class="knob">
-                  <b>Words</b>
-                  <small>言語化</small>
-                  <div class="meter"><i style="width:78%"></i></div>
-                </div>
-                <div class="knob">
-                  <b>Loop</b>
-                  <small>継続運用</small>
-                  <div class="meter"><i style="width:64%"></i></div>
-                </div>
-              </div>
-
-              <div style="padding:14px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted); font-size:12.5px;">
-                ここを「自分の強み3つ」に置き換えると、いきなり刺さる。
-              </div>
+            <div class="profile-image-container">
+              <img id="displayProfileImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23222'/%3E%3Ctext x='50%25' y='50%25' fill='%23999' font-size='14' text-anchor='middle' dominant-baseline='middle'%3EProfile Image%3C/text%3E%3C/svg%3E">
             </div>
-
           </div>
         </div>
       </div>
@@ -433,7 +432,7 @@
         <div class="secHead">
           <div>
             <h2 class="h2">About</h2>
-            <p class="sub">“個性”を仕事に変換する</p>
+            <p class="sub">"個性"を仕事に変換する</p>
           </div>
         </div>
 
@@ -444,7 +443,7 @@
               <div class="row">
                 <div class="l">
                   <b>Why</b>
-                  <span>音楽が“人の記憶”に残る瞬間を増やしたい。</span>
+                  <span>音楽が"人の記憶"に残る瞬間を増やしたい。</span>
                 </div>
                 <div class="r">Core</div>
               </div>
@@ -485,7 +484,7 @@
               <div class="row">
                 <div class="l">
                   <b>制作 → 実装</b>
-                  <span>Shorts/Reels企画を“実際に作れる”側。</span>
+                  <span>Shorts/Reels企画を"実際に作れる"側。</span>
                 </div>
                 <div class="r">Create</div>
               </div>
@@ -538,7 +537,7 @@
         <div class="secHead">
           <div>
             <h2 class="h2">Skills</h2>
-            <p class="sub">“職種の言葉”で書くと強い</p>
+            <p class="sub">"職種の言葉"で書くと強い</p>
           </div>
         </div>
 
@@ -566,18 +565,18 @@
         <div class="secHead">
           <div>
             <h2 class="h2">Links</h2>
-            <p class="sub">ここを整えると“仕事が来る”</p>
+            <p class="sub">ここを整えると"仕事が来る"</p>
           </div>
         </div>
 
         <div class="panel">
           <div class="list">
-            <a class="row" href="https://www.instagram.com/" target="_blank" rel="noopener">
-              <div class="l"><b>Instagram</b><span>@your_account</span></div>
+            <a class="row" id="instagramLink" href="https://www.instagram.com/" target="_blank" rel="noopener">
+              <div class="l"><b>Instagram</b><span id="instagramText">@your_account</span></div>
               <div class="r">Open →</div>
             </a>
-            <a class="row" href="https://x.com/" target="_blank" rel="noopener">
-              <div class="l"><b>X</b><span>@your_account</span></div>
+            <a class="row" id="twitterLink" href="https://x.com/" target="_blank" rel="noopener">
+              <div class="l"><b>X</b><span id="twitterText">@your_account</span></div>
               <div class="r">Open →</div>
             </a>
             <a class="row" href="https://note.com/" target="_blank" rel="noopener">
@@ -605,8 +604,8 @@
         <div class="split">
           <div class="panel">
             <div class="list">
-              <a class="row" href="mailto:your@email.com">
-                <div class="l"><b>Email</b><span>your@email.com</span></div>
+              <a class="row" id="emailLink" href="mailto:your@email.com">
+                <div class="l"><b>Email</b><span id="emailText">your@email.com</span></div>
                 <div class="r">Send →</div>
               </a>
               <a class="row" href="https://line.me/" target="_blank" rel="noopener">
@@ -618,7 +617,7 @@
           <div class="panel">
             <h3 style="margin:0 0 10px; font-size:13.5px;">Message</h3>
             <p style="margin:0; color:var(--muted); font-size:13px;">
-              例：ショート施策の企画・台本・導線設計が得意です。楽曲の魅力を“伝わる形”に変換します。
+              例：ショート施策の企画・台本・導線設計が得意です。楽曲の魅力を"伝わる形"に変換します。
             </p>
             <div class="chips" style="margin-top:12px;">
               <span class="chip">A&R</span><span class="chip">Marketing</span><span class="chip">Creative</span>
@@ -630,13 +629,14 @@
 
     <footer class="footer">
       <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
-        <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span>YOUR NAME</span></div>
+        <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span id="footerName">YOUR NAME</span></div>
         <small>© 2026 YOUR NAME. All rights reserved.</small>
       </div>
     </footer>
   </main>
 
   <script>
+    // UI Controls
     const openMenu = document.getElementById("openMenu");
     const closeMenu = document.getElementById("closeMenu");
     const backdrop = document.getElementById("backdrop");
@@ -659,6 +659,114 @@
     backdrop?.addEventListener("click", closeDrawer);
     drawerLinks.forEach(a => a.addEventListener("click", closeDrawer));
     document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeDrawer(); });
+
+    // Profile Edit
+    const editBtn = document.getElementById("editBtn");
+    const editModal = document.getElementById("editModal");
+    const closeModal = document.getElementById("closeModal");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const editForm = document.getElementById("editForm");
+    const profileImage = document.getElementById("profileImage");
+    const profileImagePreview = document.getElementById("profileImagePreview");
+
+    const nameInput = document.getElementById("nameInput");
+    const titleInput = document.getElementById("titleInput");
+    const leadInput = document.getElementById("leadInput");
+    const emailInput = document.getElementById("emailInput");
+    const twitterInput = document.getElementById("twitterInput");
+    const instagramInput = document.getElementById("instagramInput");
+
+    // Load profile data from localStorage
+    function loadProfile(){
+      const profile = JSON.parse(localStorage.getItem("profile") || "{}");
+      
+      if(profile.name){
+        document.getElementById("navName").textContent = profile.name;
+        document.getElementById("drawerName").textContent = profile.name;
+        document.getElementById("footerName").textContent = profile.name;
+        nameInput.value = profile.name;
+      }
+      
+      if(profile.title){
+        document.getElementById("titleDisplay").innerHTML = profile.title;
+        titleInput.value = profile.title;
+      }
+      
+      if(profile.lead){
+        document.getElementById("leadDisplay").textContent = profile.lead;
+        leadInput.value = profile.lead;
+      }
+      
+      if(profile.email){
+        document.getElementById("emailText").textContent = profile.email;
+        document.getElementById("emailLink").href = "mailto:" + profile.email;
+        emailInput.value = profile.email;
+      }
+      
+      if(profile.twitter){
+        document.getElementById("twitterText").textContent = profile.twitter;
+        document.getElementById("twitterLink").href = "https://x.com/" + profile.twitter.replace("@", "");
+        twitterInput.value = profile.twitter;
+      }
+      
+      if(profile.instagram){
+        document.getElementById("instagramText").textContent = profile.instagram;
+        document.getElementById("instagramLink").href = "https://www.instagram.com/" + profile.instagram.replace("@", "");
+        instagramInput.value = profile.instagram;
+      }
+      
+      if(profile.photo){
+        document.getElementById("displayProfileImage").src = profile.photo;
+      }
+    }
+
+    function openEditModal(){
+      editModal.classList.add("show");
+    }
+
+    function closeEditModal(){
+      editModal.classList.remove("show");
+    }
+
+    profileImage.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          profileImagePreview.src = event.target.result;
+          profileImagePreview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    editForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const profile = {
+        name: nameInput.value || "YOUR NAME",
+        title: titleInput.value || "音楽の"熱"を、<br>伝わる形に変える。",
+        lead: leadInput.value || "仕事では、感情を「構造」に落とす。",
+        email: emailInput.value || "your@email.com",
+        twitter: twitterInput.value || "@your_account",
+        instagram: instagramInput.value || "@your_account",
+        photo: profileImagePreview.src || document.getElementById("displayProfileImage").src
+      };
+      
+      localStorage.setItem("profile", JSON.stringify(profile));
+      loadProfile();
+      closeEditModal();
+    });
+
+    editBtn.addEventListener("click", openEditModal);
+    closeModal.addEventListener("click", closeEditModal);
+    cancelBtn.addEventListener("click", closeEditModal);
+    editModal.addEventListener("click", (e) => {
+      if(e.target === editModal) closeEditModal();
+    });
+
+    // Initialize
+    loadProfile();
   </script>
 </body>
 </html>
