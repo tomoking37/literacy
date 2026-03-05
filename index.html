@@ -485,7 +485,13 @@
         span.className = "tag";
         span.textContent = t;
         span.dataset.tagIndex = idx;
-        span.title = editMode ? "編集はエクスポート→JSONでタグ配列を書き換え" : "";
+        span.dataset.editable = "true";
+        span.dataset.key = `tag_${idx}`;
+        span.contentEditable = editMode ? "true" : "false";
+        span.title = editMode ? "タグを編集" : "";
+        span.addEventListener("input", () => {
+          state.tags[idx] = span.textContent;
+        });
         tagsWrap.appendChild(span);
       });
 
@@ -505,16 +511,39 @@
       // socials
       const socialWrap = $("#socialWrap");
       socialWrap.innerHTML = "";
-      state.socials.forEach(s => {
+      state.socials.forEach((s, idx) => {
         const div = document.createElement("div");
         div.className = "item";
-        div.innerHTML = `
-          <b>${escapeHtml(s.label)}</b>
-          <span>${escapeHtml(s.note || "")}</span>
-          <div style="margin-top:10px;">
-            <a class="btn" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">開く</a>
-          </div>
-        `;
+        
+        const b = document.createElement("b");
+        b.textContent = s.label;
+        div.appendChild(b);
+        
+        const span = document.createElement("span");
+        span.textContent = s.note || "";
+        span.dataset.editable = "true";
+        span.dataset.key = `social_${idx}`;
+        span.contentEditable = editMode ? "true" : "false";
+        span.style.display = "block";
+        span.style.color = "var(--muted)";
+        span.style.fontSize = "12.5px";
+        span.style.marginTop = "3px";
+        span.addEventListener("input", () => {
+          state.socials[idx].note = span.textContent;
+        });
+        div.appendChild(span);
+        
+        const btnDiv = document.createElement("div");
+        btnDiv.style.marginTop = "10px";
+        const a = document.createElement("a");
+        a.className = "btn";
+        a.href = s.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = "開く";
+        btnDiv.appendChild(a);
+        div.appendChild(btnDiv);
+        
         socialWrap.appendChild(div);
       });
 
@@ -642,9 +671,9 @@
     }
 
     // init
+    render();
     setStatus();
     bindEditable();
-    render();
   </script>
 </body>
 </html>
