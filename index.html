@@ -3,677 +3,662 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>プロフィール | YOUR NAME</title>
-  <meta name="description" content="自己紹介・実績・スキルをまとめたプロフィールページ" />
-
-  <!-- OGP (SNSでの表示) -->
-  <meta property="og:title" content="プロフィール | YOUR NAME" />
-  <meta property="og:description" content="自己紹介・実績・スキルをまとめたプロフィールページ" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="" id="ogImageMeta" />
-
+  <title>YOUR NAME | Music Profile</title>
+  <meta name="description" content="音楽業界で働く個人のための、ユニークでスマホに強いプロフィールページ" />
   <style>
     :root{
-      --bg:#0b0d12;
-      --card:#121624;
-      --card2:#0f1422;
-      --text:#e8ebf2;
-      --muted:#a7afc3;
-      --line:rgba(255,255,255,.08);
-      --accent:#7aa7ff;
-      --accent2:#7dffcf;
-      --danger:#ff6b6b;
-      --shadow: 0 12px 40px rgba(0,0,0,.35);
-      --radius: 18px;
-      --radius2: 26px;
+      --bg:#07070b;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --line: rgba(255,255,255,.12);
+      --panel: rgba(255,255,255,.06);
+      --shadow: 0 24px 80px rgba(0,0,0,.62);
+      --r: 18px;
+      --r2: 28px;
+      --max: 1080px;
+
+      --a1:#7c5cff;
+      --a2:#00f5d4;
+      --a3:#ff4d8d;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
-      background: radial-gradient(1200px 800px at 20% 0%, rgba(122,167,255,.18), transparent 60%),
-                  radial-gradient(1000px 700px at 100% 30%, rgba(125,255,207,.10), transparent 55%),
-                  var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
       color:var(--text);
+      background:
+        radial-gradient(900px 620px at 10% -10%, rgba(124,92,255,.25), transparent 55%),
+        radial-gradient(900px 620px at 105% 10%, rgba(0,245,212,.14), transparent 55%),
+        radial-gradient(900px 680px at 70% 120%, rgba(255,77,141,.14), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
       line-height:1.55;
-    }
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:980px; margin:0 auto; padding:28px 16px 56px}
-    .topbar{
-      display:flex; gap:10px; align-items:center; justify-content:space-between;
-      position:sticky; top:0; z-index:10;
-      padding:12px 0;
-      backdrop-filter: blur(10px);
-    }
-    .brand{
-      display:flex; gap:10px; align-items:center;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .pill{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      padding:7px 10px;
-      border-radius:999px;
-      display:inline-flex; gap:8px; align-items:center;
-    }
-    .btn{
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      display:inline-flex; gap:8px; align-items:center;
-      transition:.15s transform, .15s background;
-      user-select:none;
-    }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(122,167,255,.20), rgba(125,255,207,.12));
-      border-color: rgba(122,167,255,.35);
-    }
-    .btn.danger{
-      background: rgba(255,107,107,.10);
-      border-color: rgba(255,107,107,.35);
-    }
-    .hero{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:16px;
-      margin-top:10px;
-    }
-    @media (max-width: 860px){
-      .hero{grid-template-columns:1fr}
-      .topbar{position:relative}
-    }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius: var(--radius2);
-      padding:18px;
-      box-shadow: var(--shadow);
-    }
-    .profile{
-      display:flex; gap:16px; align-items:center;
-    }
-    .avatar{
-      width:96px; height:96px; border-radius:22px; overflow:hidden;
-      border:1px solid var(--line);
-      background: linear-gradient(135deg, rgba(122,167,255,.15), rgba(125,255,207,.10));
-      display:flex; align-items:center; justify-content:center;
-      flex:0 0 auto;
-      position:relative;
-    }
-    .avatar img{width:100%; height:100%; object-fit:cover; display:block}
-    .avatar .hint{
-      position:absolute; inset:auto 8px 8px 8px;
-      font-size:11px; color:rgba(255,255,255,.7);
-      background: rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.12);
-      padding:4px 8px; border-radius:999px;
-      text-align:center;
-      display:none;
-    }
-    .edit-on .avatar .hint{display:block}
-    .h1{
-      font-size:24px; margin:0;
       letter-spacing:.2px;
     }
-    .sub{
-      color:var(--muted);
-      margin:6px 0 0;
-      font-size:13.5px;
-    }
-    .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
-    .tag{
-      padding:7px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size:12px;
-    }
-    .cta{
-      display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;
-    }
-    .grid{
-      display:grid; gap:16px;
-      grid-template-columns: 1fr 1fr;
-      margin-top:16px;
-    }
-    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
-    .sec-title{
-      margin:0 0 10px;
-      font-size:14px;
-      letter-spacing:.4px;
-      color: rgba(255,255,255,.85);
-      display:flex; align-items:center; gap:10px;
-    }
-    .sec-title:before{
-      content:"";
-      width:10px; height:10px; border-radius:4px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      opacity:.9;
-    }
-    .list{display:grid; gap:10px}
-    .item{
-      padding:12px 12px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.18);
-    }
-    .item b{display:block; font-size:13.5px}
-    .item span{display:block; color:var(--muted); font-size:12.5px; margin-top:3px}
-    .two{
-      display:grid; gap:10px;
-      grid-template-columns: 1fr 1fr;
-    }
-    @media (max-width: 520px){ .two{grid-template-columns:1fr} }
+    a{color:inherit; text-decoration:none}
 
-    /* Editable look */
-    [data-editable="true"]{
-      outline: none;
-      border-radius: 10px;
-      padding: 2px 6px;
-      margin: -2px -6px;
-      transition: .15s background;
-    }
-    .edit-on [data-editable="true"]{
-      background: rgba(122,167,255,.10);
-      box-shadow: inset 0 0 0 1px rgba(122,167,255,.25);
-    }
-    .footer{
-      margin-top:18px;
-      color: rgba(255,255,255,.45);
-      font-size:12px;
-      text-align:center;
-    }
-    .divider{
-      height:1px; background: var(--line);
-      margin:14px 0;
-    }
-
-    /* Modal */
-    .modal-backdrop{
+    .noise{
+      pointer-events:none;
       position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center; justify-content:center;
-      padding:16px;
-      z-index:50;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.35;
     }
-    .modal{
-      width:min(720px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      padding:16px;
+
+    .container{max-width:var(--max); margin:0 auto; padding:0 18px}
+
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:50;
+      background: rgba(7,7,11,.62);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.07);
     }
-    .modal h3{margin:0 0 10px; font-size:14px}
-    .modal textarea{
-      width:100%;
-      min-height:190px;
-      background: rgba(0,0,0,.30);
-      color:var(--text);
-      border:1px solid var(--line);
-      border-radius: 12px;
-      padding:12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;
+    .headbar{
+      height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
     }
-    .modal .row{
-      display:flex; gap:10px; justify-content:flex-end; margin-top:10px; flex-wrap:wrap;
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:900;
+      letter-spacing:1px;
     }
-    .note{
+    .mark{
+      width:34px; height:34px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(0,245,212,.65), transparent 60%),
+        radial-gradient(16px 16px at 65% 40%, rgba(124,92,255,.55), transparent 60%),
+        radial-gradient(14px 14px at 60% 70%, rgba(255,77,141,.50), transparent 60%),
+        rgba(255,255,255,.05);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+    .nav{
+      display:flex; gap:14px; align-items:center;
       color:var(--muted);
-      font-size:12px;
-      margin-top:6px;
+      font-size:13px;
     }
-    .small{
-      font-size:12px; color:var(--muted);
+    .nav a{padding:10px 10px; border-radius:14px}
+    .nav a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      cursor:pointer;
+      transition:.15s transform, .15s background;
+      user-select:none;
+      font-size:13px;
     }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.085)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(0,245,212,.16), rgba(255,77,141,.14));
+      border-color: rgba(124,92,255,.35);
+    }
+    .hamburger{display:none}
+    @media (max-width: 920px){
+      .nav{display:none}
+      .hamburger{display:inline-flex; width:42px; height:42px; justify-content:center}
+    }
+
+    /* Drawer */
+    .backdrop{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      display:none; z-index:60;
+    }
+    .drawer{
+      position:fixed; top:0; right:0;
+      height:100%;
+      width:min(360px, 88vw);
+      background: rgba(10,10,16,.92);
+      border-left: 1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      transform: translateX(100%);
+      transition:.18s transform;
+      z-index:70;
+      padding:16px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .drawer.open{transform: translateX(0)}
+    .backdrop.show{display:block}
+    .drawer a{
+      padding:12px 12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* Hero: split + poster feel */
+    .hero{padding: 22px 0 10px}
+    .poster{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .poster::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(520px 360px at 16% 20%, rgba(124,92,255,.28), transparent 60%),
+        radial-gradient(520px 360px at 90% 30%, rgba(0,245,212,.16), transparent 60%),
+        radial-gradient(620px 520px at 60% 120%, rgba(255,77,141,.16), transparent 60%);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .poster-inner{
+      position:relative;
+      padding: 18px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+      align-items: stretch;
+      min-height: 420px;
+    }
+    @media (max-width: 920px){
+      .poster-inner{grid-template-columns:1fr; min-height:auto}
+    }
+
+    .left{
+      display:flex; flex-direction:column; gap: 14px;
+      justify-content:flex-end;
+      padding: 8px;
+    }
+
+    .tapeRow{display:flex; gap:10px; flex-wrap:wrap}
+    .tape{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+    }
+    .pulse{
+      width:8px; height:8px; border-radius:3px;
+      background: linear-gradient(135deg, var(--a1), var(--a2));
+      box-shadow: 0 0 22px rgba(124,92,255,.35);
+      animation: p 1.6s ease-in-out infinite;
+    }
+    @keyframes p{
+      0%,100%{transform:scale(1); opacity:.9}
+      50%{transform:scale(1.35); opacity:.55}
+    }
+
+    .title{
+      margin:0;
+      font-weight: 900;
+      font-size: clamp(28px, 3.6vw, 48px);
+      line-height: 1.08;
+      letter-spacing: .4px;
+    }
+    .lead{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 65ch;
+    }
+
+    .ctas{display:flex; gap:10px; flex-wrap:wrap; margin-top: 6px}
+
+    /* Right: “mix rack” */
+    .rack{
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+    }
+    .rackHead{
+      padding: 14px;
+      display:flex; justify-content:space-between; align-items:flex-start; gap: 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .rackHead b{font-size:13px}
+    .rackHead span{display:block; margin-top:6px; color:var(--muted); font-size:12.5px}
+    .knobs{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .knob{
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .knob b{display:block; font-size:12.5px}
+    .knob small{display:block; margin-top:6px; color:var(--muted); font-size:12px}
+    .meter{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      margin-top: 10px;
+    }
+    .meter > i{
+      display:block; height:100%;
+      width: 60%;
+      background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+      border-radius: 999px;
+      box-shadow: 0 0 18px rgba(0,245,212,.18);
+    }
+
+    /* Sections: not card-grid heavy */
+    .section{padding: 16px 0 0}
+    .secHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 12px;
+      margin: 18px 0 10px;
+    }
+    .h2{margin:0; font-size:16px; letter-spacing:.4px}
+    .sub{margin:0; color:var(--muted2); font-size:12.5px}
+
+    .split{
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 920px){ .split{grid-template-columns:1fr} }
+
+    .panel{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 16px 50px rgba(0,0,0,.35);
+      padding: 14px;
+    }
+
+    .list{display:grid; gap:10px}
+    .row{
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+      display:flex; justify-content:space-between; align-items:flex-start; gap: 12px;
+    }
+    .row .l{min-width:0}
+    .row b{display:block; font-size:13px}
+    .row span{display:block; margin-top:6px; color:var(--muted); font-size:12.5px}
+    .row .r{color:rgba(255,255,255,.72); font-size:12px; white-space:nowrap}
+
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px}
+    .chip{
+      font-size:11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.80);
+    }
+
+    .footer{
+      padding: 26px 0 42px;
+      margin-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: var(--muted);
+    }
+    small{color:rgba(255,255,255,.45)}
+    html{scroll-behavior:smooth}
   </style>
 </head>
 
 <body>
-  <div class="wrap" id="app">
-    <div class="topbar">
-      <div class="brand">
-        <span class="pill">PROFILE PAGE</span>
-        <span class="pill" id="statusPill">閲覧モード</span>
-      </div>
+  <div class="noise" aria-hidden="true"></div>
 
-      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-        <button class="btn" id="importBtn" title="JSONを貼り付けて読み込み">インポート</button>
-        <button class="btn" id="exportBtn" title="JSONを書き出し">エクスポート</button>
-        <button class="btn primary" id="editBtn">編集モード</button>
-        <button class="btn danger" id="resetBtn" title="保存内容を初期化">リセット</button>
+  <header class="header">
+    <div class="container">
+      <div class="headbar">
+        <a class="brand" href="#top">
+          <span class="mark" aria-hidden="true"></span>
+          <span>YOUR NAME</span>
+        </a>
+
+        <nav class="nav">
+          <a href="#about">About</a>
+          <a href="#works">Works</a>
+          <a href="#skills">Skills</a>
+          <a href="#links">Links</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn primary" href="#contact">Work with me</a>
+          <button class="btn hamburger" id="openMenu">Menu</button>
+        </div>
       </div>
     </div>
+  </header>
 
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span>YOUR NAME</span></div>
+      <button class="btn" id="closeMenu">Close</button>
+    </div>
+    <a class="drawerLink" href="#about">About</a>
+    <a class="drawerLink" href="#works">Works</a>
+    <a class="drawerLink" href="#skills">Skills</a>
+    <a class="drawerLink" href="#links">Links</a>
+    <a class="drawerLink" href="#contact">Contact</a>
+    <div style="margin-top:auto;">
+      <a class="btn primary" style="width:100%; justify-content:center" href="#contact">Work with me</a>
+    </div>
+  </aside>
+
+  <main id="top">
     <section class="hero">
-      <!-- Left -->
-      <div class="card">
-        <div class="profile">
-          <div class="avatar" id="avatarBox">
-            <img id="avatarImg" alt="プロフィール写真" />
-            <div class="hint">写真を変更</div>
+      <div class="container">
+        <div class="poster">
+          <div class="poster-inner">
+            <div class="left">
+              <div class="tapeRow">
+                <span class="tape"><span class="pulse"></span>New in Music</span>
+                <span class="tape">A&R / Marketing</span>
+                <span class="tape">Storytelling</span>
+              </div>
+
+              <h1 class="title">音楽の“熱”を、<br>伝わる形に変える。</h1>
+              <p class="lead">
+                仕事では、感情を「構造」に落とす。ファンの熱量を「導線」に落とす。
+                音楽業界で使える個性を、ちゃんと“仕事の言葉”で見せるプロフィール。
+              </p>
+
+              <div class="ctas">
+                <a class="btn primary" href="#works">Portfolio</a>
+                <a class="btn" href="#links">Links</a>
+                <a class="btn" href="#contact">Contact</a>
+              </div>
+
+              <div class="chips">
+                <span class="chip">K-POP / J-POP</span>
+                <span class="chip">Short video</span>
+                <span class="chip">UGC</span>
+                <span class="chip">Data</span>
+              </div>
+            </div>
+
+            <div class="rack" aria-label="mix rack">
+              <div class="rackHead">
+                <div>
+                  <b>Mix Rack (UI)</b>
+                  <span>“音”の記号で、らしさを出す</span>
+                </div>
+                <span style="color:rgba(255,255,255,.7); font-size:12px;">2026</span>
+              </div>
+
+              <div class="knobs">
+                <div class="knob">
+                  <b>Idea</b>
+                  <small>企画の強さ</small>
+                  <div class="meter"><i style="width:72%"></i></div>
+                </div>
+                <div class="knob">
+                  <b>Words</b>
+                  <small>言語化</small>
+                  <div class="meter"><i style="width:78%"></i></div>
+                </div>
+                <div class="knob">
+                  <b>Loop</b>
+                  <small>継続運用</small>
+                  <div class="meter"><i style="width:64%"></i></div>
+                </div>
+              </div>
+
+              <div style="padding:14px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted); font-size:12.5px;">
+                ここを「自分の強み3つ」に置き換えると、いきなり刺さる。
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">About</h2>
+            <p class="sub">“個性”を仕事に変換する</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Statement</h3>
+            <div class="list">
+              <div class="row">
+                <div class="l">
+                  <b>Why</b>
+                  <span>音楽が“人の記憶”に残る瞬間を増やしたい。</span>
+                </div>
+                <div class="r">Core</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>How</b>
+                  <span>熱量を言語化 → 企画 → ショート/UGC導線で拡張。</span>
+                </div>
+                <div class="r">Process</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>What</b>
+                  <span>A&R / 企画 / マーケ / クリエイティブ改善。</span>
+                </div>
+                <div class="r">Role</div>
+              </div>
+            </div>
           </div>
 
-          <div style="min-width:0;">
-            <h1 class="h1" data-key="name" data-editable="true">YOUR NAME</h1>
-            <p class="sub" data-key="headline" data-editable="true">
-              ここに肩書きや一言キャッチ（例：美容師 × 言語化 / SNS運用 / PM など）
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Highlights</h3>
+            <div class="list">
+              <div class="row">
+                <div class="l">
+                  <b>推し活 → 企画視点</b>
+                  <span>ファンの行動を観察して、刺さるフックを設計。</span>
+                </div>
+                <div class="r">Culture</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>研究 → 再現性</b>
+                  <span>ストーリーでUGCが増えるか調査・分析。</span>
+                </div>
+                <div class="r">Data</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>制作 → 実装</b>
+                  <span>Shorts/Reels企画を“実際に作れる”側。</span>
+                </div>
+                <div class="r">Create</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section" id="works">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Works</h2>
+            <p class="sub">リンクを貼れる実績置き場</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="list">
+            <a class="row" href="#" target="_blank" rel="noopener">
+              <div class="l">
+                <b>Short-form campaign idea</b>
+                <span>60秒動画企画（TikTok / Reels / Shorts）</span>
+              </div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="#" target="_blank" rel="noopener">
+              <div class="l">
+                <b>UGC × Storytelling research</b>
+                <span>調査設計・分析（レポート/スライド）</span>
+              </div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="#" target="_blank" rel="noopener">
+              <div class="l">
+                <b>Content strategy</b>
+                <span>SNS導線・コンテンツ改善（Before/After）</span>
+              </div>
+              <div class="r">Open →</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Skills</h2>
+            <p class="sub">“職種の言葉”で書くと強い</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">A&R / Planning</h3>
+            <div class="chips">
+              <span class="chip">企画書</span><span class="chip">フック設計</span><span class="chip">ストーリー構成</span>
+              <span class="chip">リスナー心理</span><span class="chip">施策設計</span>
+            </div>
+          </div>
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Marketing / Creative</h3>
+            <div class="chips">
+              <span class="chip">Short動画</span><span class="chip">UGC</span><span class="chip">SNS導線</span>
+              <span class="chip">改善</span><span class="chip">データ解釈</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="links">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Links</h2>
+            <p class="sub">ここを整えると“仕事が来る”</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="list">
+            <a class="row" href="https://www.instagram.com/" target="_blank" rel="noopener">
+              <div class="l"><b>Instagram</b><span>@your_account</span></div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="https://x.com/" target="_blank" rel="noopener">
+              <div class="l"><b>X</b><span>@your_account</span></div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="https://note.com/" target="_blank" rel="noopener">
+              <div class="l"><b>note</b><span>記事 / 実績 / 思想</span></div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="https://www.youtube.com/" target="_blank" rel="noopener">
+              <div class="l"><b>YouTube</b><span>制作物 / Shorts</span></div>
+              <div class="r">Open →</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Contact</h2>
+            <p class="sub">まずは連絡窓口だけでOK</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <div class="list">
+              <a class="row" href="mailto:your@email.com">
+                <div class="l"><b>Email</b><span>your@email.com</span></div>
+                <div class="r">Send →</div>
+              </a>
+              <a class="row" href="https://line.me/" target="_blank" rel="noopener">
+                <div class="l"><b>LINE</b><span>相談用リンク（任意）</span></div>
+                <div class="r">Open →</div>
+              </a>
+            </div>
+          </div>
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Message</h3>
+            <p style="margin:0; color:var(--muted); font-size:13px;">
+              例：ショート施策の企画・台本・導線設計が得意です。楽曲の魅力を“伝わる形”に変換します。
             </p>
-            <div class="tags" id="tagsWrap"></div>
+            <div class="chips" style="margin-top:12px;">
+              <span class="chip">A&R</span><span class="chip">Marketing</span><span class="chip">Creative</span>
+            </div>
           </div>
         </div>
-
-        <div class="divider"></div>
-
-        <p class="sub" data-key="bio" data-editable="true" style="font-size:14px; color:rgba(232,235,242,.9);">
-          自己紹介文。何をしていて、何が得意で、どんな人に価値を出せるかを短く。
-          改行してもOK。
-        </p>
-
-        <div class="cta" id="ctaWrap"></div>
-
-        <input id="avatarInput" type="file" accept="image/*" style="display:none;" />
-        <p class="note">※編集モードONのとき：文章を直接クリックして編集 →「編集モード」ボタンで保存。</p>
-      </div>
-
-      <!-- Right -->
-      <div class="card">
-        <h2 class="sec-title">クイック情報</h2>
-        <div class="two">
-          <div class="item">
-            <b data-key="quick1_title" data-editable="true">対応エリア</b>
-            <span data-key="quick1_value" data-editable="true">例：千葉 / 東京（オンライン可）</span>
-          </div>
-          <div class="item">
-            <b data-key="quick2_title" data-editable="true">得意領域</b>
-            <span data-key="quick2_value" data-editable="true">例：ボブ / カウンセリング / SNS導線設計</span>
-          </div>
-          <div class="item">
-            <b data-key="quick3_title" data-editable="true">相談内容</b>
-            <span data-key="quick3_value" data-editable="true">例：カット相談 / コンサル / 取材・仕事依頼</span>
-          </div>
-          <div class="item">
-            <b data-key="quick4_title" data-editable="true">返信目安</b>
-            <span data-key="quick4_value" data-editable="true">例：24時間以内</span>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <h2 class="sec-title">SNS / Links</h2>
-        <div class="list" id="socialWrap"></div>
-
-        <p class="small" style="margin-top:10px;">
-          ※ボタンやリンク先は編集モードでテキストを変えたあと、エクスポート→JSONのURLを書き換えるのが確実。
-        </p>
       </div>
     </section>
 
-    <section class="grid">
-      <div class="card">
-        <h2 class="sec-title">経歴</h2>
-        <div class="list" id="careerWrap"></div>
+    <footer class="footer">
+      <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span>YOUR NAME</span></div>
+        <small>© 2026 YOUR NAME. All rights reserved.</small>
       </div>
-
-      <div class="card">
-        <h2 class="sec-title">得意スキル</h2>
-        <div class="list" id="skillsWrap"></div>
-      </div>
-
-      <div class="card">
-        <h2 class="sec-title">実績</h2>
-        <div class="list" id="worksWrap"></div>
-      </div>
-
-      <div class="card">
-        <h2 class="sec-title">よくある相談</h2>
-        <div class="list" id="faqWrap"></div>
-      </div>
-    </section>
-
-    <div class="footer">
-      <span data-key="footer" data-editable="true">© YOUR NAME — All rights reserved.</span>
-    </div>
-  </div>
-
-  <!-- Import/Export Modal -->
-  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
-    <div class="modal">
-      <h3 id="modalTitle">JSON</h3>
-      <textarea id="jsonArea" spellcheck="false"></textarea>
-      <div class="row">
-        <button class="btn" id="closeModalBtn">閉じる</button>
-        <button class="btn primary" id="applyModalBtn">反映</button>
-      </div>
-      <div class="note">
-        エクスポートしたJSONはメモ帳に保存しておくと復元できる。別PC/スマホにも移せる。
-      </div>
-    </div>
-  </div>
+    </footer>
+  </main>
 
   <script>
-    const STORAGE_KEY = "profile_page_v1";
+    const openMenu = document.getElementById("openMenu");
+    const closeMenu = document.getElementById("closeMenu");
+    const backdrop = document.getElementById("backdrop");
+    const drawer = document.getElementById("drawer");
+    const drawerLinks = document.querySelectorAll(".drawerLink");
 
-    const defaultData = {
-      meta: {
-        ogImage: "" // ここに画像URLを入れるとSNSでOGP画像が出やすい（任意）
-      },
-      text: {
-        name: "YOUR NAME",
-        headline: "ここに肩書きや一言キャッチ（例：美容師 × 言語化 / SNS運用 / PM など）",
-        bio: "自己紹介文。何をしていて、何が得意で、どんな人に価値を出せるかを短く。\n改行してもOK。",
-        quick1_title: "対応エリア",
-        quick1_value: "例：千葉 / 東京（オンライン可）",
-        quick2_title: "得意領域",
-        quick2_value: "例：ボブ / カウンセリング / SNS導線設計",
-        quick3_title: "相談内容",
-        quick3_value: "例：カット相談 / コンサル / 取材・仕事依頼",
-        quick4_title: "返信目安",
-        quick4_value: "例：24時間以内",
-        footer: "© YOUR NAME — All rights reserved."
-      },
-      tags: ["#得意分野1", "#得意分野2", "#得意分野3"],
-      avatar: {
-        dataUrl: "" // 画像アップロードで入る（base64）
-      },
-      ctaButtons: [
-        { label: "問い合わせ（メール）", url: "mailto:your@email.com", primary: true },
-        { label: "LINE", url: "https://line.me/", primary: false },
-        { label: "実績 / note", url: "https://note.com/", primary: false }
-      ],
-      socials: [
-        { label: "Instagram", url: "https://www.instagram.com/", note: "@your_account" },
-        { label: "X", url: "https://x.com/", note: "@your_account" },
-        { label: "YouTube", url: "https://www.youtube.com/", note: "チャンネル" }
-      ],
-      career: [
-        { title: "経歴タイトル1", desc: "いつ / 何を / どんな成果" },
-        { title: "経歴タイトル2", desc: "経験や強みが伝わる一文" },
-        { title: "経歴タイトル3", desc: "実務や活動の流れ" }
-      ],
-      skills: [
-        { title: "スキル1", desc: "例：カウンセリング設計、言語化、提案" },
-        { title: "スキル2", desc: "例：SNS導線、発信設計、コンテンツ改善" },
-        { title: "スキル3", desc: "例：業務改善、プロジェクト推進" }
-      ],
-      works: [
-        { title: "実績1", desc: "数字や結果があれば入れる（例：売上、PV、施策成果）" },
-        { title: "実績2", desc: "ビフォーアフターが強い" },
-        { title: "実績3", desc: "一言で伝わる成果" }
-      ],
-      faq: [
-        { title: "Q. まず何を相談すればいい？", desc: "A. 目的（理想）と現状、いつまでに変えたいか。これだけでOK。" },
-        { title: "Q. 料金は？", desc: "A. ここに案内（例：メニューリンク or DMで案内）" },
-        { title: "Q. オンライン対応は？", desc: "A. 可 / 不可 / 条件 を書く" }
-      ]
-    };
-
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-
-    let state = loadState();
-    let editMode = false;
-    let modalMode = "export"; // export or import
-
-    function loadState(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return structuredClone(defaultData);
-        const parsed = JSON.parse(raw);
-        return mergeDeep(structuredClone(defaultData), parsed);
-      }catch(e){
-        return structuredClone(defaultData);
-      }
+    function openDrawer(){
+      drawer.classList.add("open");
+      backdrop.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+    function closeDrawer(){
+      drawer.classList.remove("open");
+      backdrop.classList.remove("show");
+      document.body.style.overflow = "";
     }
 
-    function saveState(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state, null, 2));
-    }
-
-    function mergeDeep(target, src){
-      for(const k in src){
-        if(src[k] && typeof src[k] === "object" && !Array.isArray(src[k])){
-          target[k] = mergeDeep(target[k] ?? {}, src[k]);
-        }else{
-          target[k] = src[k];
-        }
-      }
-      return target;
-    }
-
-    function setStatus(){
-      $("#statusPill").textContent = editMode ? "編集モード" : "閲覧モード";
-      $("#app").classList.toggle("edit-on", editMode);
-      $$("#app [data-editable='true']").forEach(el => {
-        el.contentEditable = editMode ? "true" : "false";
-      });
-    }
-
-    function render(){
-      // text
-      for(const [k,v] of Object.entries(state.text)){
-        const el = document.querySelector(`[data-key="${k}"]`);
-        if(el) el.textContent = v;
-      }
-
-      // avatar
-      const img = $("#avatarImg");
-      if(state.avatar.dataUrl){
-        img.src = state.avatar.dataUrl;
-        $("#ogImageMeta").setAttribute("content", state.meta.ogImage || state.avatar.dataUrl);
-      }else{
-        // fallback: simple gradient + initials
-        img.removeAttribute("src");
-        img.alt = "プロフィール写真（未設定）";
-        $("#ogImageMeta").setAttribute("content", state.meta.ogImage || "");
-        // show initials via background only (no text overlay to keep clean)
-      }
-
-      // tags
-      const tagsWrap = $("#tagsWrap");
-      tagsWrap.innerHTML = "";
-      state.tags.forEach((t, idx) => {
-        const span = document.createElement("span");
-        span.className = "tag";
-        span.textContent = t;
-        span.dataset.tagIndex = idx;
-        span.dataset.editable = "true";
-        span.dataset.key = `tag_${idx}`;
-        span.contentEditable = editMode ? "true" : "false";
-        span.title = editMode ? "タグを編集" : "";
-        span.addEventListener("input", () => {
-          state.tags[idx] = span.textContent;
-        });
-        tagsWrap.appendChild(span);
-      });
-
-      // CTA buttons
-      const ctaWrap = $("#ctaWrap");
-      ctaWrap.innerHTML = "";
-      state.ctaButtons.forEach(btn => {
-        const a = document.createElement("a");
-        a.className = "btn" + (btn.primary ? " primary" : "");
-        a.href = btn.url;
-        a.target = btn.url.startsWith("http") ? "_blank" : "_self";
-        a.rel = "noopener noreferrer";
-        a.textContent = btn.label;
-        ctaWrap.appendChild(a);
-      });
-
-      // socials
-      const socialWrap = $("#socialWrap");
-      socialWrap.innerHTML = "";
-      state.socials.forEach((s, idx) => {
-        const div = document.createElement("div");
-        div.className = "item";
-        
-        const b = document.createElement("b");
-        b.textContent = s.label;
-        div.appendChild(b);
-        
-        const span = document.createElement("span");
-        span.textContent = s.note || "";
-        span.dataset.editable = "true";
-        span.dataset.key = `social_${idx}`;
-        span.contentEditable = editMode ? "true" : "false";
-        span.style.display = "block";
-        span.style.color = "var(--muted)";
-        span.style.fontSize = "12.5px";
-        span.style.marginTop = "3px";
-        span.addEventListener("input", () => {
-          state.socials[idx].note = span.textContent;
-        });
-        div.appendChild(span);
-        
-        const btnDiv = document.createElement("div");
-        btnDiv.style.marginTop = "10px";
-        const a = document.createElement("a");
-        a.className = "btn";
-        a.href = s.url;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.textContent = "開く";
-        btnDiv.appendChild(a);
-        div.appendChild(btnDiv);
-        
-        socialWrap.appendChild(div);
-      });
-
-      // lists
-      mountList("#careerWrap", state.career);
-      mountList("#skillsWrap", state.skills);
-      mountList("#worksWrap", state.works);
-      mountList("#faqWrap", state.faq);
-    }
-
-    function mountList(selector, arr){
-      const wrap = $(selector);
-      wrap.innerHTML = "";
-      arr.forEach((it) => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `
-          <b>${escapeHtml(it.title)}</b>
-          <span>${escapeHtml(it.desc)}</span>
-        `;
-        wrap.appendChild(div);
-      });
-    }
-
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g, s => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[s]));
-    }
-    function escapeAttr(str){
-      return String(str).replace(/"/g, "&quot;");
-    }
-
-    function bindEditable(){
-      $$("#app [data-editable='true']").forEach(el => {
-        el.addEventListener("input", () => {
-          const key = el.dataset.key;
-          state.text[key] = el.textContent;
-        });
-      });
-    }
-
-    function openModal(mode){
-      modalMode = mode;
-      $("#modalBackdrop").style.display = "flex";
-      $("#modalTitle").textContent = mode === "export" ? "エクスポート（JSON）" : "インポート（JSON）";
-      if(mode === "export"){
-        $("#jsonArea").value = JSON.stringify(state, null, 2);
-      }else{
-        $("#jsonArea").value = "";
-        $("#jsonArea").placeholder = "ここにJSONを貼り付けて「反映」";
-      }
-    }
-    function closeModal(){
-      $("#modalBackdrop").style.display = "none";
-    }
-
-    // Events
-    $("#editBtn").addEventListener("click", () => {
-      editMode = !editMode;
-      setStatus();
-
-      if(!editMode){
-        // leaving edit mode -> save
-        saveState();
-      }
-    });
-
-    $("#resetBtn").addEventListener("click", () => {
-      if(confirm("保存内容を初期化して、テンプレに戻す？")){
-        localStorage.removeItem(STORAGE_KEY);
-        state = structuredClone(defaultData);
-        editMode = false;
-        setStatus();
-        render();
-      }
-    });
-
-    $("#exportBtn").addEventListener("click", () => openModal("export"));
-    $("#importBtn").addEventListener("click", () => openModal("import"));
-    $("#closeModalBtn").addEventListener("click", closeModal);
-
-    $("#applyModalBtn").addEventListener("click", () => {
-      if(modalMode === "export"){
-        // copy to clipboard
-        navigator.clipboard?.writeText($("#jsonArea").value).catch(()=>{});
-        alert("JSONを表示中。必要ならコピーして保存してね。");
-        return;
-      }
-      // import
-      try{
-        const parsed = JSON.parse($("#jsonArea").value);
-        state = mergeDeep(structuredClone(defaultData), parsed);
-        saveState();
-        render();
-        closeModal();
-        alert("インポート完了！");
-      }catch(e){
-        alert("JSONの形式が壊れてるっぽい。もう一回確認して貼り付けて。");
-      }
-    });
-
-    // Avatar upload (only in edit mode)
-    $("#avatarBox").addEventListener("click", () => {
-      if(!editMode) return;
-      $("#avatarInput").click();
-    });
-
-    $("#avatarInput").addEventListener("change", async (e) => {
-      const file = e.target.files?.[0];
-      if(!file) return;
-      const dataUrl = await fileToDataUrl(file);
-      state.avatar.dataUrl = dataUrl;
-      saveState();
-      render();
-    });
-
-    function fileToDataUrl(file){
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // init
-    render();
-    setStatus();
-    bindEditable();
+    openMenu?.addEventListener("click", openDrawer);
+    closeMenu?.addEventListener("click", closeDrawer);
+    backdrop?.addEventListener("click", closeDrawer);
+    drawerLinks.forEach(a => a.addEventListener("click", closeDrawer));
+    document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeDrawer(); });
   </script>
 </body>
 </html>
