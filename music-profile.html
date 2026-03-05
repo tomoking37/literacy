@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YOUR NAME | Music Profile</title>
+  <meta name="description" content="音楽業界で働く個人のための、ユニークでスマホに強いプロフィールページ" />
+  <style>
+    :root{
+      --bg:#07070b;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --line: rgba(255,255,255,.12);
+      --panel: rgba(255,255,255,.06);
+      --shadow: 0 24px 80px rgba(0,0,0,.62);
+      --r: 18px;
+      --r2: 28px;
+      --max: 1080px;
+
+      --a1:#7c5cff;
+      --a2:#00f5d4;
+      --a3:#ff4d8d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 620px at 10% -10%, rgba(124,92,255,.25), transparent 55%),
+        radial-gradient(900px 620px at 105% 10%, rgba(0,245,212,.14), transparent 55%),
+        radial-gradient(900px 680px at 70% 120%, rgba(255,77,141,.14), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
+      line-height:1.55;
+      letter-spacing:.2px;
+    }
+    a{color:inherit; text-decoration:none}
+
+    .noise{
+      pointer-events:none;
+      position:fixed; inset:0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.35;
+    }
+
+    .container{max-width:var(--max); margin:0 auto; padding:0 18px}
+
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:50;
+      background: rgba(7,7,11,.62);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .headbar{
+      height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:900;
+      letter-spacing:1px;
+    }
+    .mark{
+      width:34px; height:34px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(14px 14px at 30% 30%, rgba(0,245,212,.65), transparent 60%),
+        radial-gradient(16px 16px at 65% 40%, rgba(124,92,255,.55), transparent 60%),
+        radial-gradient(14px 14px at 60% 70%, rgba(255,77,141,.50), transparent 60%),
+        rgba(255,255,255,.05);
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+    .nav{
+      display:flex; gap:14px; align-items:center;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .nav a{padding:10px 10px; border-radius:14px}
+    .nav a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      cursor:pointer;
+      transition:.15s transform, .15s background;
+      user-select:none;
+      font-size:13px;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.085)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(0,245,212,.16), rgba(255,77,141,.14));
+      border-color: rgba(124,92,255,.35);
+    }
+    .hamburger{display:none}
+    @media (max-width: 920px){
+      .nav{display:none}
+      .hamburger{display:inline-flex; width:42px; height:42px; justify-content:center}
+    }
+
+    /* Drawer */
+    .backdrop{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      display:none; z-index:60;
+    }
+    .drawer{
+      position:fixed; top:0; right:0;
+      height:100%;
+      width:min(360px, 88vw);
+      background: rgba(10,10,16,.92);
+      border-left: 1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      transform: translateX(100%);
+      transition:.18s transform;
+      z-index:70;
+      padding:16px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .drawer.open{transform: translateX(0)}
+    .backdrop.show{display:block}
+    .drawer a{
+      padding:12px 12px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* Hero: split + poster feel */
+    .hero{padding: 22px 0 10px}
+    .poster{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .poster::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(520px 360px at 16% 20%, rgba(124,92,255,.28), transparent 60%),
+        radial-gradient(520px 360px at 90% 30%, rgba(0,245,212,.16), transparent 60%),
+        radial-gradient(620px 520px at 60% 120%, rgba(255,77,141,.16), transparent 60%);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .poster-inner{
+      position:relative;
+      padding: 18px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+      align-items: stretch;
+      min-height: 420px;
+    }
+    @media (max-width: 920px){
+      .poster-inner{grid-template-columns:1fr; min-height:auto}
+    }
+
+    .left{
+      display:flex; flex-direction:column; gap: 14px;
+      justify-content:flex-end;
+      padding: 8px;
+    }
+
+    .tapeRow{display:flex; gap:10px; flex-wrap:wrap}
+    .tape{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+    }
+    .pulse{
+      width:8px; height:8px; border-radius:3px;
+      background: linear-gradient(135deg, var(--a1), var(--a2));
+      box-shadow: 0 0 22px rgba(124,92,255,.35);
+      animation: p 1.6s ease-in-out infinite;
+    }
+    @keyframes p{
+      0%,100%{transform:scale(1); opacity:.9}
+      50%{transform:scale(1.35); opacity:.55}
+    }
+
+    .title{
+      margin:0;
+      font-weight: 900;
+      font-size: clamp(28px, 3.6vw, 48px);
+      line-height: 1.08;
+      letter-spacing: .4px;
+    }
+    .lead{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 65ch;
+    }
+
+    .ctas{display:flex; gap:10px; flex-wrap:wrap; margin-top: 6px}
+
+    /* Right: “mix rack” */
+    .rack{
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+    }
+    .rackHead{
+      padding: 14px;
+      display:flex; justify-content:space-between; align-items:flex-start; gap: 12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .rackHead b{font-size:13px}
+    .rackHead span{display:block; margin-top:6px; color:var(--muted); font-size:12.5px}
+    .knobs{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .knob{
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .knob b{display:block; font-size:12.5px}
+    .knob small{display:block; margin-top:6px; color:var(--muted); font-size:12px}
+    .meter{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      margin-top: 10px;
+    }
+    .meter > i{
+      display:block; height:100%;
+      width: 60%;
+      background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+      border-radius: 999px;
+      box-shadow: 0 0 18px rgba(0,245,212,.18);
+    }
+
+    /* Sections: not card-grid heavy */
+    .section{padding: 16px 0 0}
+    .secHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 12px;
+      margin: 18px 0 10px;
+    }
+    .h2{margin:0; font-size:16px; letter-spacing:.4px}
+    .sub{margin:0; color:var(--muted2); font-size:12.5px}
+
+    .split{
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    @media (max-width: 920px){ .split{grid-template-columns:1fr} }
+
+    .panel{
+      border-radius: var(--r);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 16px 50px rgba(0,0,0,.35);
+      padding: 14px;
+    }
+
+    .list{display:grid; gap:10px}
+    .row{
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+      display:flex; justify-content:space-between; align-items:flex-start; gap: 12px;
+    }
+    .row .l{min-width:0}
+    .row b{display:block; font-size:13px}
+    .row span{display:block; margin-top:6px; color:var(--muted); font-size:12.5px}
+    .row .r{color:rgba(255,255,255,.72); font-size:12px; white-space:nowrap}
+
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px}
+    .chip{
+      font-size:11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.80);
+    }
+
+    .footer{
+      padding: 26px 0 42px;
+      margin-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: var(--muted);
+    }
+    small{color:rgba(255,255,255,.45)}
+    html{scroll-behavior:smooth}
+  </style>
+</head>
+
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="header">
+    <div class="container">
+      <div class="headbar">
+        <a class="brand" href="#top">
+          <span class="mark" aria-hidden="true"></span>
+          <span>YOUR NAME</span>
+        </a>
+
+        <nav class="nav">
+          <a href="#about">About</a>
+          <a href="#works">Works</a>
+          <a href="#skills">Skills</a>
+          <a href="#links">Links</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn primary" href="#contact">Work with me</a>
+          <button class="btn hamburger" id="openMenu">Menu</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span>YOUR NAME</span></div>
+      <button class="btn" id="closeMenu">Close</button>
+    </div>
+    <a class="drawerLink" href="#about">About</a>
+    <a class="drawerLink" href="#works">Works</a>
+    <a class="drawerLink" href="#skills">Skills</a>
+    <a class="drawerLink" href="#links">Links</a>
+    <a class="drawerLink" href="#contact">Contact</a>
+    <div style="margin-top:auto;">
+      <a class="btn primary" style="width:100%; justify-content:center" href="#contact">Work with me</a>
+    </div>
+  </aside>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="poster">
+          <div class="poster-inner">
+            <div class="left">
+              <div class="tapeRow">
+                <span class="tape"><span class="pulse"></span>New in Music</span>
+                <span class="tape">A&R / Marketing</span>
+                <span class="tape">Storytelling</span>
+              </div>
+
+              <h1 class="title">音楽の“熱”を、<br>伝わる形に変える。</h1>
+              <p class="lead">
+                仕事では、感情を「構造」に落とす。ファンの熱量を「導線」に落とす。
+                音楽業界で使える個性を、ちゃんと“仕事の言葉”で見せるプロフィール。
+              </p>
+
+              <div class="ctas">
+                <a class="btn primary" href="#works">Portfolio</a>
+                <a class="btn" href="#links">Links</a>
+                <a class="btn" href="#contact">Contact</a>
+              </div>
+
+              <div class="chips">
+                <span class="chip">K-POP / J-POP</span>
+                <span class="chip">Short video</span>
+                <span class="chip">UGC</span>
+                <span class="chip">Data</span>
+              </div>
+            </div>
+
+            <div class="rack" aria-label="mix rack">
+              <div class="rackHead">
+                <div>
+                  <b>Mix Rack (UI)</b>
+                  <span>“音”の記号で、らしさを出す</span>
+                </div>
+                <span style="color:rgba(255,255,255,.7); font-size:12px;">2026</span>
+              </div>
+
+              <div class="knobs">
+                <div class="knob">
+                  <b>Idea</b>
+                  <small>企画の強さ</small>
+                  <div class="meter"><i style="width:72%"></i></div>
+                </div>
+                <div class="knob">
+                  <b>Words</b>
+                  <small>言語化</small>
+                  <div class="meter"><i style="width:78%"></i></div>
+                </div>
+                <div class="knob">
+                  <b>Loop</b>
+                  <small>継続運用</small>
+                  <div class="meter"><i style="width:64%"></i></div>
+                </div>
+              </div>
+
+              <div style="padding:14px; border-top:1px solid rgba(255,255,255,.08); color:var(--muted); font-size:12.5px;">
+                ここを「自分の強み3つ」に置き換えると、いきなり刺さる。
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">About</h2>
+            <p class="sub">“個性”を仕事に変換する</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Statement</h3>
+            <div class="list">
+              <div class="row">
+                <div class="l">
+                  <b>Why</b>
+                  <span>音楽が“人の記憶”に残る瞬間を増やしたい。</span>
+                </div>
+                <div class="r">Core</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>How</b>
+                  <span>熱量を言語化 → 企画 → ショート/UGC導線で拡張。</span>
+                </div>
+                <div class="r">Process</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>What</b>
+                  <span>A&R / 企画 / マーケ / クリエイティブ改善。</span>
+                </div>
+                <div class="r">Role</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Highlights</h3>
+            <div class="list">
+              <div class="row">
+                <div class="l">
+                  <b>推し活 → 企画視点</b>
+                  <span>ファンの行動を観察して、刺さるフックを設計。</span>
+                </div>
+                <div class="r">Culture</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>研究 → 再現性</b>
+                  <span>ストーリーでUGCが増えるか調査・分析。</span>
+                </div>
+                <div class="r">Data</div>
+              </div>
+              <div class="row">
+                <div class="l">
+                  <b>制作 → 実装</b>
+                  <span>Shorts/Reels企画を“実際に作れる”側。</span>
+                </div>
+                <div class="r">Create</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section" id="works">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Works</h2>
+            <p class="sub">リンクを貼れる実績置き場</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="list">
+            <a class="row" href="#" target="_blank" rel="noopener">
+              <div class="l">
+                <b>Short-form campaign idea</b>
+                <span>60秒動画企画（TikTok / Reels / Shorts）</span>
+              </div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="#" target="_blank" rel="noopener">
+              <div class="l">
+                <b>UGC × Storytelling research</b>
+                <span>調査設計・分析（レポート/スライド）</span>
+              </div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="#" target="_blank" rel="noopener">
+              <div class="l">
+                <b>Content strategy</b>
+                <span>SNS導線・コンテンツ改善（Before/After）</span>
+              </div>
+              <div class="r">Open →</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Skills</h2>
+            <p class="sub">“職種の言葉”で書くと強い</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">A&R / Planning</h3>
+            <div class="chips">
+              <span class="chip">企画書</span><span class="chip">フック設計</span><span class="chip">ストーリー構成</span>
+              <span class="chip">リスナー心理</span><span class="chip">施策設計</span>
+            </div>
+          </div>
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Marketing / Creative</h3>
+            <div class="chips">
+              <span class="chip">Short動画</span><span class="chip">UGC</span><span class="chip">SNS導線</span>
+              <span class="chip">改善</span><span class="chip">データ解釈</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="links">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Links</h2>
+            <p class="sub">ここを整えると“仕事が来る”</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="list">
+            <a class="row" href="https://www.instagram.com/" target="_blank" rel="noopener">
+              <div class="l"><b>Instagram</b><span>@your_account</span></div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="https://x.com/" target="_blank" rel="noopener">
+              <div class="l"><b>X</b><span>@your_account</span></div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="https://note.com/" target="_blank" rel="noopener">
+              <div class="l"><b>note</b><span>記事 / 実績 / 思想</span></div>
+              <div class="r">Open →</div>
+            </a>
+            <a class="row" href="https://www.youtube.com/" target="_blank" rel="noopener">
+              <div class="l"><b>YouTube</b><span>制作物 / Shorts</span></div>
+              <div class="r">Open →</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="secHead">
+          <div>
+            <h2 class="h2">Contact</h2>
+            <p class="sub">まずは連絡窓口だけでOK</p>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="panel">
+            <div class="list">
+              <a class="row" href="mailto:your@email.com">
+                <div class="l"><b>Email</b><span>your@email.com</span></div>
+                <div class="r">Send →</div>
+              </a>
+              <a class="row" href="https://line.me/" target="_blank" rel="noopener">
+                <div class="l"><b>LINE</b><span>相談用リンク（任意）</span></div>
+                <div class="r">Open →</div>
+              </a>
+            </div>
+          </div>
+          <div class="panel">
+            <h3 style="margin:0 0 10px; font-size:13.5px;">Message</h3>
+            <p style="margin:0; color:var(--muted); font-size:13px;">
+              例：ショート施策の企画・台本・導線設計が得意です。楽曲の魅力を“伝わる形”に変換します。
+            </p>
+            <div class="chips" style="margin-top:12px;">
+              <span class="chip">A&R</span><span class="chip">Marketing</span><span class="chip">Creative</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div class="brand" style="gap:10px;"><span class="mark" aria-hidden="true"></span><span>YOUR NAME</span></div>
+        <small>© 2026 YOUR NAME. All rights reserved.</small>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const openMenu = document.getElementById("openMenu");
+    const closeMenu = document.getElementById("closeMenu");
+    const backdrop = document.getElementById("backdrop");
+    const drawer = document.getElementById("drawer");
+    const drawerLinks = document.querySelectorAll(".drawerLink");
+
+    function openDrawer(){
+      drawer.classList.add("open");
+      backdrop.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+    function closeDrawer(){
+      drawer.classList.remove("open");
+      backdrop.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    openMenu?.addEventListener("click", openDrawer);
+    closeMenu?.addEventListener("click", closeDrawer);
+    backdrop?.addEventListener("click", closeDrawer);
+    drawerLinks.forEach(a => a.addEventListener("click", closeDrawer));
+    document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeDrawer(); });
+  </script>
+</body>
+</html>
