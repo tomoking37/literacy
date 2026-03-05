@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>プロフィール | YOUR NAME</title>
+  <meta name="description" content="自己紹介・実績・スキルをまとめたプロフィールページ" />
+
+  <!-- OGP (SNSでの表示) -->
+  <meta property="og:title" content="プロフィール | YOUR NAME" />
+  <meta property="og:description" content="自己紹介・実績・スキルをまとめたプロフィールページ" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="" id="ogImageMeta" />
+
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:#121624;
+      --card2:#0f1422;
+      --text:#e8ebf2;
+      --muted:#a7afc3;
+      --line:rgba(255,255,255,.08);
+      --accent:#7aa7ff;
+      --accent2:#7dffcf;
+      --danger:#ff6b6b;
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 26px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+      background: radial-gradient(1200px 800px at 20% 0%, rgba(122,167,255,.18), transparent 60%),
+                  radial-gradient(1000px 700px at 100% 30%, rgba(125,255,207,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:980px; margin:0 auto; padding:28px 16px 56px}
+    .topbar{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:10;
+      padding:12px 0;
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding:7px 10px;
+      border-radius:999px;
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      display:inline-flex; gap:8px; align-items:center;
+      transition:.15s transform, .15s background;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.06)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(122,167,255,.20), rgba(125,255,207,.12));
+      border-color: rgba(122,167,255,.35);
+    }
+    .hero{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:16px;
+      margin-top:10px;
+    }
+    @media (max-width: 860px){
+      .hero{grid-template-columns:1fr}
+      .topbar{position:relative}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      padding:18px;
+      box-shadow: var(--shadow);
+    }
+    .profile{
+      display:flex; gap:16px; align-items:center;
+    }
+    .avatar{
+      width:96px; height:96px; border-radius:22px; overflow:hidden;
+      border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(122,167,255,.15), rgba(125,255,207,.10));
+      display:flex; align-items:center; justify-content:center;
+      flex:0 0 auto;
+      position:relative;
+    }
+    .avatar img{width:100%; height:100%; object-fit:cover; display:block}
+    .h1{
+      font-size:24px; margin:0;
+      letter-spacing:.2px;
+    }
+    .sub{
+      color:var(--muted);
+      margin:6px 0 0;
+      font-size:13.5px;
+    }
+    .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+    .tag{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:12px;
+    }
+    .cta{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;
+    }
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns: 1fr 1fr;
+      margin-top:16px;
+    }
+    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
+    .sec-title{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.4px;
+      color: rgba(255,255,255,.85);
+      display:flex; align-items:center; gap:10px;
+    }
+    .sec-title:before{
+      content:"";
+      width:10px; height:10px; border-radius:4px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      opacity:.9;
+    }
+    .list{display:grid; gap:10px}
+    .item{
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+    }
+    .item b{display:block; font-size:13.5px}
+    .item span{display:block; color:var(--muted); font-size:12.5px; margin-top:3px}
+    .two{
+      display:grid; gap:10px;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 520px){ .two{grid-template-columns:1fr} }
+    .footer{
+      margin-top:18px;
+      color: rgba(255,255,255,.45);
+      font-size:12px;
+      text-align:center;
+    }
+    .divider{
+      height:1px; background: var(--line);
+      margin:14px 0;
+    }
+    .small{
+      font-size:12px; color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap" id="app">
+    <div class="topbar">
+      <div class="brand">
+        <span class="pill">PROFILE PAGE</span>
+      </div>
+    </div>
+
+    <section class="hero">
+      <!-- Left -->
+      <div class="card">
+        <div class="profile">
+          <div class="avatar" id="avatarBox">
+            <img id="avatarImg" alt="プロフィール写真" />
+          </div>
+
+          <div style="min-width:0;">
+            <h1 class="h1" id="nameEl">YOUR NAME</h1>
+            <p class="sub" id="headlineEl">
+              ここに肩書きや一言キャッチ（例：美容師 × 言語化 / SNS運用 / PM など）
+            </p>
+            <div class="tags" id="tagsWrap"></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="sub" id="bioEl" style="font-size:14px; color:rgba(232,235,242,.9);">
+          自己紹介文。何をしていて、何が得意で、どんな人に価値を出せるかを短く。
+          改行してもOK。
+        </p>
+
+        <div class="cta" id="ctaWrap"></div>
+      </div>
+
+      <!-- Right -->
+      <div class="card">
+        <h2 class="sec-title">クイック情報</h2>
+        <div class="two">
+          <div class="item">
+            <b id="quick1_titleEl">対応エリア</b>
+            <span id="quick1_valueEl">例：千葉 / 東京（オンライン可）</span>
+          </div>
+          <div class="item">
+            <b id="quick2_titleEl">得意領域</b>
+            <span id="quick2_valueEl">例：ボブ / カウンセリング / SNS導線設計</span>
+          </div>
+          <div class="item">
+            <b id="quick3_titleEl">相談内容</b>
+            <span id="quick3_valueEl">例：カット相談 / コンサル / 取材・仕事依頼</span>
+          </div>
+          <div class="item">
+            <b id="quick4_titleEl">返信目安</b>
+            <span id="quick4_valueEl">例：24時間以内</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 class="sec-title">SNS / Links</h2>
+        <div class="list" id="socialWrap"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2 class="sec-title">経歴</h2>
+        <div class="list" id="careerWrap"></div>
+      </div>
+
+      <div class="card">
+        <h2 class="sec-title">得意スキル</h2>
+        <div class="list" id="skillsWrap"></div>
+      </div>
+
+      <div class="card">
+        <h2 class="sec-title">実績</h2>
+        <div class="list" id="worksWrap"></div>
+      </div>
+
+      <div class="card">
+        <h2 class="sec-title">よくある相談</h2>
+        <div class="list" id="faqWrap"></div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <span id="footerEl">© YOUR NAME — All rights reserved.</span>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "profile_page_v1";
+
+    const defaultData = {
+      meta: {
+        ogImage: ""
+      },
+      text: {
+        name: "YOUR NAME",
+        headline: "ここに肩書きや一言キャッチ（例：美容師 × 言語化 / SNS運用 / PM など）",
+        bio: "自己紹介文。何をしていて、何が得意で、どんな人に価値を出せるかを短く。\n改行してもOK。",
+        quick1_title: "対応エリア",
+        quick1_value: "例：千葉 / 東京（オンライン可）",
+        quick2_title: "得意領域",
+        quick2_value: "例：ボブ / カウンセリング / SNS導線設計",
+        quick3_title: "相談内容",
+        quick3_value: "例：カット相談 / コンサル / 取材・仕事依頼",
+        quick4_title: "返信目安",
+        quick4_value: "例：24時間以内",
+        footer: "© YOUR NAME — All rights reserved."
+      },
+      tags: ["#得意分野1", "#得意分野2", "#得意分野3"],
+      avatar: {
+        dataUrl: ""
+      },
+      ctaButtons: [
+        { label: "問い合わせ（メール）", url: "mailto:your@email.com", primary: true },
+        { label: "LINE", url: "https://line.me/", primary: false },
+        { label: "実績 / note", url: "https://note.com/", primary: false }
+      ],
+      socials: [
+        { label: "Instagram", url: "https://www.instagram.com/", note: "@your_account" },
+        { label: "X", url: "https://x.com/", note: "@your_account" },
+        { label: "YouTube", url: "https://www.youtube.com/", note: "チャンネル" }
+      ],
+      career: [
+        { title: "経歴タイトル1", desc: "いつ / 何を / どんな成果" },
+        { title: "経歴タイトル2", desc: "経験や強みが伝わる一文" },
+        { title: "経歴タイトル3", desc: "実務や活動の流れ" }
+      ],
+      skills: [
+        { title: "スキル1", desc: "例：カウンセリング設計、言語化、提案" },
+        { title: "スキル2", desc: "例：SNS導線、発信設計、コンテンツ改善" },
+        { title: "スキル3", desc: "例：業務改善、プロジェクト推進" }
+      ],
+      works: [
+        { title: "実績1", desc: "数字や結果があれば入れる（例：売上、PV、施策成果）" },
+        { title: "実績2", desc: "ビフォーアフターが強い" },
+        { title: "実績3", desc: "一言で伝わる成果" }
+      ],
+      faq: [
+        { title: "Q. まず何を相談すればいい？", desc: "A. 目的（理想）と現状、いつまでに変えたいか。これだけでOK。" },
+        { title: "Q. 料金は？", desc: "A. ここに案内（例：メニューリンク or DMで案内）" },
+        { title: "Q. オンライン対応は？", desc: "A. 可 / 不可 / 条件 を書く" }
+      ]
+    };
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    let state = loadState();
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return structuredClone(defaultData);
+        const parsed = JSON.parse(raw);
+        return mergeDeep(structuredClone(defaultData), parsed);
+      }catch(e){
+        return structuredClone(defaultData);
+      }
+    }
+
+    function mergeDeep(target, src){
+      for(const k in src){
+        if(src[k] && typeof src[k] === "object" && !Array.isArray(src[k])){
+          target[k] = mergeDeep(target[k] ?? {}, src[k]);
+        }else{
+          target[k] = src[k];
+        }
+      }
+      return target;
+    }
+
+    function render(){
+      // text
+      $("#nameEl").textContent = state.text.name;
+      $("#headlineEl").textContent = state.text.headline;
+      $("#bioEl").textContent = state.text.bio;
+      $("#quick1_titleEl").textContent = state.text.quick1_title;
+      $("#quick1_valueEl").textContent = state.text.quick1_value;
+      $("#quick2_titleEl").textContent = state.text.quick2_title;
+      $("#quick2_valueEl").textContent = state.text.quick2_value;
+      $("#quick3_titleEl").textContent = state.text.quick3_title;
+      $("#quick3_valueEl").textContent = state.text.quick3_value;
+      $("#quick4_titleEl").textContent = state.text.quick4_title;
+      $("#quick4_valueEl").textContent = state.text.quick4_value;
+      $("#footerEl").textContent = state.text.footer;
+
+      // avatar
+      const img = $("#avatarImg");
+      if(state.avatar.dataUrl){
+        img.src = state.avatar.dataUrl;
+        $("#ogImageMeta").setAttribute("content", state.meta.ogImage || state.avatar.dataUrl);
+      }else{
+        img.removeAttribute("src");
+        img.alt = "プロフィール写真（未設定）";
+        $("#ogImageMeta").setAttribute("content", state.meta.ogImage || "");
+      }
+
+      // tags
+      const tagsWrap = $("#tagsWrap");
+      tagsWrap.innerHTML = "";
+      state.tags.forEach((t) => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = t;
+        tagsWrap.appendChild(span);
+      });
+
+      // CTA buttons
+      const ctaWrap = $("#ctaWrap");
+      ctaWrap.innerHTML = "";
+      state.ctaButtons.forEach(btn => {
+        const a = document.createElement("a");
+        a.className = "btn" + (btn.primary ? " primary" : "");
+        a.href = btn.url;
+        a.target = btn.url.startsWith("http") ? "_blank" : "_self";
+        a.rel = "noopener noreferrer";
+        a.textContent = btn.label;
+        ctaWrap.appendChild(a);
+      });
+
+      // socials
+      const socialWrap = $("#socialWrap");
+      socialWrap.innerHTML = "";
+      state.socials.forEach(s => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <b>${escapeHtml(s.label)}</b>
+          <span>${escapeHtml(s.note || "")}</span>
+          <div style="margin-top:10px;">
+            <a class="btn" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">開く</a>
+          </div>
+        `;
+        socialWrap.appendChild(div);
+      });
+
+      // lists
+      mountList("#careerWrap", state.career);
+      mountList("#skillsWrap", state.skills);
+      mountList("#worksWrap", state.works);
+      mountList("#faqWrap", state.faq);
+    }
+
+    function mountList(selector, arr){
+      const wrap = $(selector);
+      wrap.innerHTML = "";
+      arr.forEach((it) => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <b>${escapeHtml(it.title)}</b>
+          <span>${escapeHtml(it.desc)}</span>
+        `;
+        wrap.appendChild(div);
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[s]));
+    }
+    function escapeAttr(str){
+      return String(str).replace(/"/g, "&quot;");
+    }
+
+    // init
+    render();
+  </script>
+</body>
+</html>
